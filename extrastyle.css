@@ -1,0 +1,659 @@
+body {
+    --scrollTrack: #0000004d;
+    --scrollThumb: #b7b7b7;
+    --ui: #19232dE6;
+    --luma: 100%;
+}
+
+/* .shipyard-ad {
+    display: none !important;
+} */
+
+::-webkit-scrollbar {
+    width: 13px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--scrollTrack);
+}
+
+::-webkit-scrollbar-corner {
+    background: var(--scrollTrack);
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background: linear-gradient(var(--scrollThumb), #000 250%);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollThumb);
+}
+
+.cyan{color: cyan;}
+.yellow{color: yellow;}
+.red{color: red;}
+.white{color: white;}
+
+body .dark, #chat:not(.closed), .closed .recent{
+    background: var(--ui)!important;
+    color: hsl(0, 0%, var(--luma))!important;
+}
+
+#paint-tool{
+    color: white!important;
+}
+
+
+
+#bottom-bar {
+    opacity: 0;
+    transition: opacity 150ms;
+}
+
+#bottom-bar:hover {
+    opacity: initial;
+}
+
+/* BUTTONS */
+
+body button,
+body .btn {
+    display: inline-block;
+    border: none;
+    box-shadow: 0 3px #333;
+    transition: transform 150ms, box-shadow 150ms, visibility 0s, opacity 200ms;
+}
+
+button[style='display: none;'] {
+    display: block !important;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 200ms, opacity 200ms;
+    pointer-events: none;
+}
+
+button:hover,
+body .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px #333;
+}
+
+button:active,
+body .btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px #333;
+}
+
+button a {
+    text-decoration: none !important;
+    color: white !important;
+}
+
+.btn-purple {
+    background: linear-gradient(#a4a, #000 200%) !important;
+}
+
+.btn-darkBlue {
+    background: linear-gradient(#1353a5, #000 200%) !important;
+}
+
+.btn-white {
+    background: linear-gradient(#fff, #000 200%) !important;
+    color: black!important;
+}
+
+.btn-grey {
+    background: linear-gradient(#666, #000 200%) !important;
+}
+
+.btn-black {
+    background: linear-gradient(#000, #ffffff 200%) !important;
+}
+
+button.dnone, select.dnone {
+    display: none;
+}
+
+#top-bar select{
+    float: right;
+}
+
+#top-bar select option{
+    color: white;  
+    background-color: rgb(53, 53, 53);
+}
+
+.btn-small.hidden{
+    display: none!important;
+}
+
+
+/* Team menu */
+
+#team_players_inner {
+    top: 110px !important;
+}
+
+#team_menu{
+    border-radius: 20px!important;
+    display: block!important;
+    opacity: 1;
+    transition: opacity 300ms, transform 250ms;
+}
+
+#team_menu[style='display: none;'],#team_menu.hidden{
+    opacity: 0;
+    transform: rotateX(90deg);
+}
+
+
+#item-ui,
+#chat,
+.shipyard-item {
+    border-radius: 10px !important
+}
+
+/* Motd */
+
+
+#motd {
+    transition: max-height 1s;
+    border-bottom-left-radius: 10px !important;
+}
+
+
+#motd-content[style='display: none;'] {
+    display: block!important;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 200ms, opacity 200ms linear, max-height 300ms, max-width 300ms;
+    max-height: 0;
+    max-width: 50px;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+#motd-content {
+    max-width: 500px;
+    max-height: 500px;
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s, opacity 200ms linear, max-height 300ms;
+}
+
+#motd-text {
+    transition: max-height 300ms;
+}
+
+
+/* smooth ship opening */
+
+#big-ui-container {
+    transition: visibility 0s, opacity 200ms linear, scale 300ms;
+    visibility: visible;
+    opacity: 1;
+}
+
+#big-ui-container[style='display: none;'] {
+    display: block!important;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 200ms, opacity 200ms linear, scale 300ms;
+    scale: .5;
+}
+
+#item-ui {
+    animation: slide-up 200ms;
+}
+
+@keyframes slide-up {
+    from { transform: translateY(100px) }
+}
+
+#item-ui-equip {
+    animation: uncollapse-equip 400ms forwards;
+    overflow: hidden;
+    max-height: 0px;
+}
+
+@keyframes uncollapse-equip {
+    to {max-height: 400px;}
+}
+
+/* chat  */
+
+#chat {
+    transition: background 150ms;
+}
+
+#chat-content div {
+    margin-top: 10px;
+}
+
+#chat-content div p a {
+    margin: 2px;
+}
+
+#chat-content div a {
+    color: white !important;
+}
+
+#chat-content div img {
+    display: inline-block;
+    width: 30%;
+    margin-right: 10px;
+}
+
+#chat-content div div {
+    display: inline-block;
+    width: 60%;
+    vertical-align: top;
+}
+
+#chat.closed #chat-content p.recent div p,
+body:not(:has(#rejoin_button.dnone)) #chat.closed #chat-content p[data-miss] div p {
+    display: block;
+}
+
+#chat.closed #chat-content p.recent div p a,
+body:not(:has(#rejoin_button.dnone)) #chat.closed #chat-content p[data-miss] div p a {
+    visibility: visible;
+    pointer-events: all;
+}
+
+/* chat animations */
+
+#chat-input{
+    max-width: 89%;
+    border-radius: 10px;
+}
+
+#chat-input + button{
+    height: 35px;
+    margin-top: -2px!important;
+}
+
+#chat-content{
+    position: relative;
+}
+
+#chat-content > p {
+    position: relative;
+    transition: 350ms;
+}
+
+body #chat #chat-content > p.recent {
+    animation: slide-left 125ms ease-out;
+    opacity: 1;
+    transform: none;
+}
+
+#chat-content :nth-child(1 of .recent), #chat-content :nth-child(1 of [data-miss]) {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+#chat-content .recent:last-child, #chat-content [data-miss]:last-child {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+@keyframes slide-left {
+    from {
+        left: -40px;
+        opacity: 0;
+    }
+
+    to {
+        left: 0;
+        opacity: 1;
+    }
+}
+
+#chat-content > p [data-trans] + pre, #comms-text > p [data-trans] + pre{
+    border-radius: 5px;
+    background-color: rgba(170, 179, 197, 0.95);
+    position: absolute;
+    bottom: 45%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: black;
+    padding: 7px;
+    transition: 250ms;
+    opacity: 0;
+    pointer-events: none;
+}
+
+#chat-content > p:hover [data-trans] + pre, #chat-content > p [data-trans] + pre:hover,
+#comms-text > p:hover [data-trans] + pre, #comms-text > p [data-trans] + pre:hover {
+    opacity: 1;
+    pointer-events: initial;
+}
+
+
+#chat-content > p::after {
+    position: absolute;
+    right: 4px;
+    top: 0;
+    content: attr(data-time);
+    color: #999;
+    font-weight: 600;
+    font-size: 10px;
+}
+
+.closed #chat-content > p::after {
+    display: none;
+}
+
+body:not(:has(#rejoin_button.dnone)) #chat.closed #chat-content p[data-miss] {
+    display: block;
+    background: rgba(134, 40, 40, 0.9)!important;
+    opacity: 1;
+}
+
+#chat.closed #chat-content p.recent .ui-hidden {
+    display: initial !important;
+    visibility: hidden;
+    transition: visibility 1s;
+}
+
+#chat-autocomplete {
+    max-height: initial !important;
+}
+
+/* comms invite and translate */
+
+#comms-text > p {
+    position: relative;
+}
+
+#comms-text p div {
+    margin-top: 10px;
+}
+
+#comms-text div > img {
+    display: inline-block;
+    width: 17%;
+    margin-right: 10px;
+}
+
+#comms-text div > div {
+    display: inline-block;
+    width: 80%;
+    vertical-align: top;
+}
+
+/* player manage in chat */
+
+.pointer{
+    cursor: pointer;
+    display: inline-block;
+    pointer-events: all;
+    visibility: visible;
+}
+
+#chat-manage{
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background: rgba(170, 179, 197, 0.95);
+    border-radius: 10px;
+    flex-direction: column;
+    gap: 5px;
+    display: flex;
+    color: black;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 200ms;
+    text-align: center;
+    padding: 0;
+}
+
+#chat-manage:focus{
+    max-height: 400px;
+    padding: 7px;
+}
+
+.closed #chat-manage{
+    max-height: 0;
+    padding: 0;
+}
+
+#chat-manage div{
+    cursor: pointer;
+    font-weight: 500;
+}
+
+#chat-manage div:hover{
+    background-color: #08c;
+}
+
+#chat select{
+    border-radius: 10px;
+    padding: 4px;
+    margin-left: 5px;
+    max-width: 80px;
+}
+
+#chat.closed select{
+    display: none;
+}
+
+/* Translate menu */
+#chat > #lang-input{
+    max-width: 20px;
+    border-radius: 5px;
+    background-color: transparent;
+    border: 2px solid white;
+    padding: 1px;
+    height: 26px;
+    color: white;
+    margin-inline: 5px;
+    text-align: center;
+}
+
+#chat.closed > i{
+    display: none;
+}
+
+#chat div > label{
+    font-size: 12px;
+}
+
+#chat div > input{
+    width: 15px;
+    height: 15px;
+}
+
+
+
+/* menu and servers */
+#shipyard select {
+    display: none;
+}
+
+#shipyard section:nth-of-type(1) {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+#shipyard section:nth-of-type(1) div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 20%;
+    padding-inline: 10px;
+    background: rgba(19, 23, 28, 0.9);
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+}
+
+#shipyard section:nth-of-type(1) > :first-child {
+    flex-basis: 100%;
+}
+
+#shipyard section:nth-of-type(1) div h4 {
+    font-size: 20px;
+}
+
+#shipyard section:nth-of-type(1) div.server-selected {
+    background: linear-gradient(#4a4, #000 200%) !important;
+}
+
+#shipyard section:nth-of-type(1) div.server-offline {
+    box-shadow: inset 0 0 10px #a22;
+}
+
+#shipyard section:nth-of-type(4) > :first-child{
+    grid-column: 1 / 3;
+}
+
+#shipyard section:nth-of-type(4){
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+#shipyard section:nth-of-type(4) div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 10px;
+    background: linear-gradient(#777, #000 200%);
+    color: white;
+    text-shadow: 2px 2px black;
+    cursor: pointer;
+}
+
+.shipyard-bin .shipyard-item{
+    transition: background-size 200ms;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: center;
+}
+
+.shipyard-bin .shipyard-item:hover {
+    background-size: 105%;
+}
+
+#shipyard > .window.dark {
+    background: rgba(25, 35, 45, .9);
+    border-radius: 10px !important;
+    width: 360px !important;
+}
+
+#shipyard > .window.dark > section {
+    padding: 5px;
+    border-radius: 10px;
+    border: none;
+    background-color: rgba(32, 45, 58, 0.5) !important;
+    user-select: none;
+}
+
+#shipyard > .window.dark > button {
+    display: none;
+}
+
+#shipyard input {
+    border-radius: 10px;
+}
+
+.tip {
+    --delay: 100ms;
+    scale: 0.5;
+    opacity: 0;
+    transition: scale var(--delay), opacity calc(var(--delay)/2), visibility var(--delay);
+    z-index: 1000000 !important;
+}
+
+.tip h3 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+*:hover>.tip.dark {
+    scale: 1;
+    opacity: 1;
+    visibility: visible;
+}
+
+.darker,
+.window,
+.dark {
+    border-radius: 10px !important;
+}
+
+/* Range things */
+
+input[type=range]:not(.color-slider) {
+    -webkit-appearance: none;
+    background: transparent !important;
+    border: none !important;
+}
+
+input[type=range]:not(.color-slider)::-webkit-slider-thumb {
+    -webkit-appearance: none;
+}
+
+input[type=range]:focus {
+    outline: none;
+}
+
+input[type=range]:not(.color-slider)::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: 1px solid #000000;
+    height: 20px;
+    width: 20px;
+    margin-top: -6px;
+    border-radius: 30px;
+    background: linear-gradient(#4a4, #000 200%);
+    cursor: pointer;
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+}
+
+input[type=range]:not(.color-slider)::-moz-range-thumb {
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    border: 1px solid #000000;
+    height: 20px;
+    width: 20px;
+    border-radius: 30px;
+    background: linear-gradient(#4a4, #000 200%);
+    cursor: pointer;
+}
+
+input[type=range]:not(.color-slider)::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 10px;
+    cursor: pointer;
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    background: #666;
+    border-radius: 4px;
+    border: 0.2px solid #010101;
+}
+
+input[type=range]:not(.color-slider)::-moz-range-track {
+    width: 100%;
+    height: 10px;
+    cursor: pointer;
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    background: #666;
+    border-radius: 4px;
+    border: 0.2px solid #010101;
+}
+
+/* disconnect */
+
+#disconnect-popup{
+    animation: zoom-in 250ms ease-in;
+}
+
+@keyframes zoom-in {
+    from{scale: 0.1;}
+    to{scale: 1;}
+}

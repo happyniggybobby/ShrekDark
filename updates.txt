@@ -1,0 +1,229 @@
+1.0 version:
+- added ship button
+- addeed list of your own words in chat
+- added settings for new things
+- removed map button, information block, ads
+
+1.5 version:
+- added rejoin button. 
+- added save ship button. Clicking it saves ship, so when you click rejoin in menu it will take you back. Its not saving ship in-game!
+- added clickable links in chat. To enable click link in chat
+- deleted bugs with ship buttons
+- moved buttons and changed colors
+
+1.6 version:
+- upgraded clickable link
+- added coolsnake303 button in manager
+- now u can access every ship from your button, no matter where it is (if u have game permission ofc)
+- added reload button in ship manager. It reloads ship in server you choose
+- added buttons for servers
+- removed save button. Now rejoin doesnt do anything in menu. (but too much effort to hide it)
+
+1.61 hotfix
+- repaired rejoin and reload entering wrong ship with simmilar name
+
+1.62 hotfix
+- repaired test server links
+
+2.0 version:
+- merged pro and optimal versions
+- changed icon and name to Shrekdark.io
+- moved settings to the extension settings
+- changed format how settigns are saved 
+- addded crew stats in Ship Manager
+- replaced custom words in chat with custom buttons in chat
+- added Snakecopter. You can change duration in settings
+- instant Save button (if connection is slow click twice)
+- added hotkeys that can be customized in settings
+- added Test Kit button in test server (Work in progress)
+- removed coolsnake303 button
+- optimalized speed of ship buttons
+- fixed reload ship box showing too many times
+
+
+2.1 version:
+- added MutationObserver
+- due to Observer upgraded speed of: buttons, instant save, crew stats, chat links, hotkeys
+- added button to copy link in chat
+- now chat links shows up immediatly
+
+- removed reload
+
+- fixed change server function
+- fixed ship buttons error
+
+- rounded corners of UI
+- fixed white font in drednot.io/img/
+
+- allowed rejoining ships with blank names
+
+- added kick all button
+
+- increased chat links performance
+- added open graph protocol for chat links, see ship and named before joining
+
+- option for hotkeys on shift or ctrl (customizable in settings)
+- manager hotkey only for Tab
+- added snakecopter hotkey
+- added kick all players hotkey
+- added save ship hotkey
+- allowed to use more keys as hotkeys
+- fixed copter and gravity hotkeys not working sometimes
+- disabled hotkeys in menu and text boxes like chat
+
+- disabled server buttons in test
+
+2.1.1
+- added customizable scrollbar
+- customize menu in extension settings
+- changed name to ShrekDark
+
+2.1.2
+- fixed invite buttons being not clickable
+- changed popup text
+
+2.1.3
+- added texture switch, u can upload your own zip
+- fixed snakecopter time, now u can cancel
+
+2.1.4
+- added missed chat messages - messages last for 5s when player come back from afk from game tab
+- added chat timestamps
+- hidden rejoin and instant save button from menu
+- bunch of css changes (new ship menu)
+- first part of adding smooth animations
+- brought back map button and ads
+
+3.0
+- customizable translator in chat
+- manage the player by clicking in chat
+- favourite ships in menu with colors
+- animations:
+    - chat
+    - motd
+    - notifications
+
+- moved chat buttons to a list
+- fixed chat invite for labs and with Hide Messages
+- readjusted server buttons
+- add texture pack through the popup
+- instant save now shows new ship on top of the list
+- fixed color range
+- fixed save and gravity not working at first try
+- gravity now clears text field
+- bunch of css changes 
+- popup remake
+
+3.1
+- added emergency ping feature
+- moved fav ship buttons to a list on top bar
+- UI themes
+- you can now select username in chat while being captain
+- increased max snakecopter time limit to 600 seconds
+- fixed dissapering chat messages
+- removed translate.google.com permission
+
+3.1.2
+- emergency ping includes ship name and ID in the message
+- can't send ping outside of ship
+- ping is now an embed
+- fixed rejoin joining random ships or none
+- timestamp is now in HH:MM:SS format
+- translation cloud with " is now correctly displayed
+
+3.1.3
+- press Ctrl + Enter in chat to translate your message
+- removed unintended feature of MOTD being hidden
+- fixed emergency ping ping issue
+
+3.1.4
+- fixed rejoin buttons visibility issue
+- fixed default UI color bug
+
+3.2
+- added official firefox support, download here
+- upgraded emergency ping with ship image
+- fixed embed bugs
+
+3.3
+- added player on ship list when clicking TAB   
+- added ability to hide Favourite ships from top bar
+- fixed (?) gravity arrows loosing focus on game
+- fixed gravity arrows spam error
+- fixed rejoin issue when someone typed 'Joined'
+- someBODY added subtle shrek accent to the extension
+
+3.4
+- **as captain you can now manage player in TAB list**
+- **clicking on translation box copies language code to language input in chat**
+- *remade invite card code - Firefox update should be much quicker* 
+**Bug fixes:**
+- fixed scroll issue when player list is too long
+- improved translation performance
+- message won't be translated if comes from the same language
+- translated message now displays original language code
+- translated message now can be copied
+- fixed restictions to the shreky thingy
+
+3.4.1
+- fixed invite's 'Open in new tab' opening in the same tab
+
+3.5
+- added chat commands suggestions and auto-fill
+- player manager can be now clicked with hidden chat
+
+- added copy ship invite button
+- refreshed icons for buttons
+- added UI buttons manager (Save, Copy invite, Help, Quick Start, Settings, Cheat menu (test), Manage, Exit, Rejoin, Map)
+ - choose button text color and visibility
+- ship saved with Instant save now instantly appear on top of the list
+
+- added translation to comms station 
+ - double click on message to translate, ctrl + enter to translate your input (default languages)
+- added invite card to comms station
+
+- rewrote About
+- added ability to edit entries in settings
+
+- added animations to: menu, inventory and buttons
+- dissmiss system messages with Escape (kicked, saved, banned)
+- improved hotkeys performance
+
+
+**Bug fixes:**
+- fixed game being out of focus after closing manager
+- fixed managing player in chat lagging (hopefully)
+- fixed invite card being able to get translated
+- fixed chat not being rounded in some cases
+- fixed chat messages delay
+- fixed /invite chat command converting to invite card
+- fixed rejoin not working 1st time after joining invite
+
+3.5.1
+- updated default texture pack
+- fixed screen issue when displaying player list and invite
+- fixed player list showing up when opening ship manager with hotkey
+
+3.5.2
+- added new adverts to safe zone
+- fixed copy button not working in invite card
+- FOR SURE fixed rejoin not working 1st time after joining invite
+
+3.5.3
+- added toggle for ' (cinematic mode) and / (coordinates)
+
+3.6
+- added save ship gravity feature
+- changed hosting for advert manifest
+- removed quick start and map buttons from manager
+- removed chat commands auto-fill. Reasons:
+ - cogg
+ - performance
+ - removal of /goto
+
+- script now doesn't load on guide pages
+- fixed button alligment
+- fixed chat commands autofill not showing after new update
+
+3.7
+- exiting ship stops snakecopter

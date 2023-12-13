@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="popup.css">
+    <title>ShrekDark</title>
+    <meta charset='UTF-8' />
+</head>
+
+<body>
+    <ul id="messageContainer"></ul>
+    <div>
+        <img src="../img/icon100.png" alt="Extension icon">
+        <h1>ShrekDark 3.6</h1>
+        <a class="big" href="popup.html">About</a>
+        <a class="big active" href="options.html">Settings</a>
+    </div>
+
+    <div>
+        <h2>Hotkeys</h2>
+        <table id="key-table">
+            <thead>
+                <tr>
+                    <th>Function</th>
+                    <th>Key</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Exit</td>
+                    <td><input id="exit" type="text" maxlength=1></td>
+                <tr>
+                    <td>Rejoin</td>
+                    <td><input id="rejoin" type="text" maxlength=1></td>
+                </tr>
+                <tr>
+                    <td>Snakecopter</td>
+                    <td><input id="copter" type="text" maxlength=1></td>
+                </tr>
+                <tr>
+                    <td>Save ship</td>
+                    <td><input id="saveshiup" type="text" maxlength=1></td>
+                </tr>
+                <tr>
+                    <td>Swap TXT</td>
+                    <td><input id="swaptxt" type="text" maxlength=1></td>
+                </tr>
+                <tr>
+                    <td>Hotkey</td>
+                    <td><select id="fkey">
+                            <option value="0">CTRL</option>
+                            <option value="1">SHIFT</option>
+                        </select></td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="add">Save</td>
+                </tr>
+            </tbody>
+        </table>
+        <ul>
+            <li>Gravity buttons are set on arrows.</li>
+            <li>Ship manager is set on Tab</li>
+            <li>CTRL+ENTER to translate chat input</li>
+            <li>Enter nothing to disable.</li>
+            <li>These hotkeys don't work in chat</li>
+        </ul>
+    </div>
+    <div>
+        <h2>Buttons Manager</h2>
+        <p>Manage the game buttons</p>
+        <table id="buttons-table">
+            <thead>
+                <tr>
+                    <th>Button</th>
+                    <th>Text</th>
+                    <th>Color</th>
+                    <th>Show</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <button id="btnsave" class="btn">Save</button>
+        <button id="btnrestore" class="btn">Restore default</button>
+    </div>
+    <div id="translateBox">
+        <h2>Chat translator</h2>
+        <p>To translate someone's messages double click on it (non-system messages)</p>
+        <p>To translate your messages in input box use Ctrl+Enter or click the Globe</p>
+        <p><a class="btn" target="_blank" href="https://cloud.google.com/translate/docs/languages">Language codes</a></p>
+        <hr>
+        <p>Choose language that you want phrases to be translated into</p>
+        <label for="langIn-input">Translate chat to: </label>
+        <input type="text" id="langIn-input" maxlength="4"><br>
+        <label for="langOut-input">By default translate my messages to: </label>
+        <input type="text" id="langOut-input" maxlength="4">
+        <p class="warning">Warning, enabling constant auto translation may cause lag</p>
+        <label for="lang-auto">Auto translate chat</label>
+        <input type="checkbox" id="lang-auto">
+    </div>
+    <div>
+        <h2>Favourite ships</h2>
+        <table id="fav-table">
+            <thead>
+                <tr>
+                    <th>Button text</th>
+                    <th>Ship ID</th>
+                    <th>Color</th>
+                    <th colspan="2">Options</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+            <tfoot>  
+                <tr>
+                    <td><input placeholder="Text" id="favtext" type="text"></td>
+                    <td><input placeholder="Ship ID" id="favid" type="text"></td>
+                    <td><input placeholder="#000" id="favcolor" type="color"></td>
+                    <td colspan="2" class="add">Add button</td>
+                </tr>
+            </tfoot>
+        </table>
+        <label><input type="checkbox" id="favcheck">Hide favourite ship from top bar</label>
+    </div>
+    <div>
+        <h2>Favourite phrases</h2>
+        <table id="word-table">
+            <thead>
+                <tr>
+                    <th>Button text</th>
+                    <th>Message</th>
+                    <th colspan="2">Options</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+            <tfoot>
+                <tr>
+                    <td><input placeholder="Text" id="wordtext" type="text"></td>
+                    <td><textarea placeholder="Message" id="wordmess"></textarea></td>
+                    <td colspan="2" class="add">Add</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div>
+        <h2>Emergency distress ping</h2>
+        <p>Quickly send emergency message to the discord webhook with ship name and ID</p>
+        <p>If you are the captain on ship, it will also send invite</p>
+        <p>Pings goes to Message field</p>
+        <p>To ping here just do @here, to ping user you will need his ID (<@2429274>)</p>
+        <table id="ping-table">
+            <thead>
+                <tr>
+                    <th>Webhook URL</th>
+                    <th>Button text</th>
+                    <th>Message</th>
+                    <th>Username</th>
+                    <th colspan="2">Options</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+            <tfoot>
+                <tr>
+                    <td><input placeholder="https://discord.com/api/webhooks/..." id="pingurl" type="url"></td>
+                    <td><input placeholder="Text" id="pingtext" type="text"></td>
+                    <td><input placeholder="@here come join" id="pingmess" type="text"></td>
+                    <td><input placeholder="Distress caller" id="pinguser" type="text"></td>
+                    <td colspan="2" class="add">Add</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div>
+        <h2>Gravity Save</h2>
+        <p>Save gravity direction of your ship</p>
+        <p>Applies on joining desired ship</p>
+        <table id="gravity-table">
+            <thead>
+                <tr>
+                    <th>Ship ID</th>
+                    <th>Gravity direction</th>
+                    <th colspan="2">Options</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+            <tfoot>
+                <tr>
+                    <td><input placeholder="Ship ID" id="gravid" type="text"></td>
+                    <td><select id="gravdir">
+                        <option value="0">up</option>
+                        <option value="1">left</option>
+                        <option value="2">right</option>
+                        <option value="3" selected>down</option>
+                    </select></td>
+                    <td colspan="2" class="add">Add</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div>
+        <h2>TXT Swap</h2>
+        <input type="file" id="txt-input" accept="application/x-zip-compressed">
+        <label for="txt-input">Choose Texture pack</label>
+        <button id="txt-remove">Remove</button>
+        <p>Status: <span id="txt-current">default shrek's pack</span></p>
+    </div>
+    <div>
+        <h2>Snakecopter</h2>
+        <label>Duration: <input type="range" id="duration" min="5" max="600"></label>
+        <p><span id="snakeoutput"></span> seconds. Updates in game in real time.</p>
+    </div>
+    <div>
+        <h2>Scrollbar</h2>
+        <label>Track: <input type="color" id="sctrack"></label>
+        <label>Thumb: <input type="color" id="scthumb"></label>
+        <label>Transparent: <input type="checkbox" id="sctrans"></label>
+    </div>
+    <div>
+        <h2>UI Theme</h2>
+        <label>Main color: <input type="color" id="uicolor"></label>
+        <label>Opacity: <input type="range" id="uiopacity" min="0" max="1" step="0.1" value="0.9" width="40"></label>
+        <button id="defaultUI" class="btn">Default</button>
+    </div>
+    <script src="options.js"></script>
+</body>
+
+</html>
