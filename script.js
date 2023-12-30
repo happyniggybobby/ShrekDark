@@ -769,6 +769,7 @@ async function promote(user, rank) {
 
 document.addEventListener('visibilitychange', () => {
     if (document.visibilityState == 'hidden') return;
+    keyToggleState["'"] = keyToggleState["/"] = false;
     document.querySelectorAll('#chat-content [data-miss]').forEach(e => {
         setTimeout(() => { e.removeAttribute('data-miss'); }, 5000);
     });

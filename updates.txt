@@ -229,3 +229,4 @@
 - exiting ship stops snakecopter
 - fixed chat scroll offset issues
 - alligned chat timestamp position
+- / and ' toggle now correctly resets after switching tabs
