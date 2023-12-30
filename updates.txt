@@ -227,3 +227,4 @@
 
 3.7
 - exiting ship stops snakecopter
+- fixed chat scroll offset issues
