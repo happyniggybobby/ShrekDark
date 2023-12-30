@@ -560,7 +560,7 @@ async function convertInvite(mess) {
                 mess.appendChild(d);
             }
         }
-        mess.scrollIntoView();
+        chatContent.scrollTop = chatContent.scrollHeight;
     }
 }
 
@@ -600,7 +600,7 @@ async function convertCommsInvite(mess) {
                 mess.appendChild(d);
             }
         }
-        mess.scrollIntoView();
+        commsContent.scrollTop = commsContent.scrollHeight;
     }
 }
 
@@ -1019,7 +1019,7 @@ function showPlayerList() {
     const playerList = document.createElement('p');
     playerList.classList.add('recent');
     const plListB = document.createElement('b');
-    plListB.textContent = `There are ${players.length} players in the ship:`;
+    plListB.textContent = `There are ${players.length} other players in the ship:`;
     const plListUl = document.createElement('ul');
     for(let player of players){
         const plListLi = document.createElement('li');
