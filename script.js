@@ -1019,7 +1019,7 @@ function showPlayerList() {
     const playerList = document.createElement('p');
     playerList.classList.add('recent');
     const plListB = document.createElement('b');
-    plListB.textContent = 'Players in the ship:';
+    plListB.textContent = `There are ${players.length} players in the ship:`;
     const plListUl = document.createElement('ul');
     for(let player of players){
         const plListLi = document.createElement('li');
@@ -1034,7 +1034,7 @@ function showPlayerList() {
     setTimeout(() => {
         playerList.classList.remove('recent');
     }, 10000)
-    playerList.scrollIntoView();
+    chatContent.scrollTop = chatContent.scrollHeight;
 }
 
 async function changeGravity(direction) {
