@@ -16,8 +16,7 @@
     },
     "permissions": [
         "storage",
-        "unlimitedStorage",
-        "declarativeNetRequest"
+        "unlimitedStorage"
     ],
     "host_permissions": ["https://drednot.io/"],
     "options_ui": {
