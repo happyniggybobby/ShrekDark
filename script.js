@@ -1011,30 +1011,40 @@ function countCrews() {
     stats.replaceChildren(...crewChildren);
 }
 
+let showPlayerListCooldown = false;
+
 function showPlayerList() {
+    if (showPlayerListCooldown) return;
+    showPlayerListCooldown = true;
+
     if (chatBox.classList.contains('closed')) chatBtn.click();
     chatInp.value = '/kick ';
     chatInp.dispatchEvent(new Event('input'));
     const players = [...document.querySelectorAll('#chat-autocomplete p')];
     document.querySelector('#chat-close').click();
-    if(players.length == 0) return;
     const playerList = document.createElement('p');
     playerList.classList.add('recent');
     const plListB = document.createElement('b');
-    plListB.textContent = `There are ${players.length} other players in the ship:`;
-    const plListUl = document.createElement('ul');
-    for(let player of players){
-        const plListLi = document.createElement('li');
-        const plListBdi = document.createElement('bdi');
-        plListBdi.textContent = player.textContent;
-        plListLi.append(plListBdi);
-        plListUl.append(plListLi);
-        if (isCap()) addPlayer(plListLi);
-    }
-    playerList.append(plListB, plListUl);
+    playerList.append(plListB);
     chatContent.append(playerList);
+
+    if(players.length === 0) plListB.textContent = `It's only you here.`;
+    else {
+        plListB.textContent = `There are ${players.length} other players in the ship:`;
+        const plListUl = document.createElement('ul');
+        for(let player of players){
+            const plListLi = document.createElement('li');
+            const plListBdi = document.createElement('bdi');
+            plListBdi.textContent = player.textContent;
+            plListLi.append(plListBdi);
+            plListUl.append(plListLi);
+            if (isCap()) addPlayer(plListLi);
+        }
+        playerList.append(plListUl);
+    }
     setTimeout(() => {
         playerList.classList.remove('recent');
+        showPlayerListCooldown = false;
     }, 10000)
     chatContent.scrollTop = chatContent.scrollHeight;
 }

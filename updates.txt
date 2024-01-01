@@ -231,3 +231,5 @@
 - alligned chat timestamp position
 - / and ' toggle now correctly resets after switching tabs
 - removed custom nest ads
+
+- player list has cooldown and message when you are alone
