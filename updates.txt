@@ -229,4 +229,5 @@
 - exiting ship stops snakecopter
 - fixed chat scroll offset issues
 - alligned chat timestamp position
-- / and ' toggle now correctly resets after switching tabs- / and ' toggle now correctly resets after switching tabs
+- / and ' toggle now correctly resets after switching tabs
+- removed custom nest ads

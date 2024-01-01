@@ -16,6 +16,7 @@ const mapBtn = document.getElementById("map_button")
 const tmenu = document.getElementById("team_menu");
 const disconnectPopup = document.getElementById("disconnect-popup");
 const buttonContainer = document.querySelector(".button-container");
+const topBar = document.querySelector('#top-bar');
 let shipYard = document.getElementById("shipyard-ships");
 const config = { childList: true, attributes: true, subtree: true };
 let playerID = '';
@@ -294,7 +295,7 @@ function addFavShips() {
             window.open(`https://drednot.io/?ship=${favShipsBox.value}`);
             pc.selected = true;
         }
-        if(result.fav.findIndex(b => b[1] == 0) == -1) document.querySelector('#top-bar').append(favShipsBox);
+        if(result.fav.findIndex(b => b[1] == 0) == -1) topBar.append(favShipsBox);
     });
 }
 
@@ -338,7 +339,7 @@ function addEmergCall() {
             emergencyPing(channel[0], channel[2], channel[3]);
             pc.selected = true;
         }
-        document.querySelector('#top-bar').append(pingsBox);
+        topBar.append(pingsBox);
     });
 }
 
@@ -505,7 +506,7 @@ observeNode(chatContent, () => {
         cShip = mess.textContent.match(/{[A-Z\d]+}/)[0];
         if (isCap() && gravityShips.hasOwnProperty(cShip)) changeGravity(gravityShips[cShip]);
     }
-    offlineGame();
+    highlightAFK();
     addTimeStamp(mess);
     if (chatTranslate.checked) translateChatMessage(mess);
     else mess.addEventListener("dblclick", () => { translateChatMessage(mess) }, { once: true });
@@ -677,8 +678,8 @@ function translate(text, from = 'auto', to = 'en') {
     });
 }
 
-function offlineGame() {
-    if (document.visibilityState == 'hidden') {
+function highlightAFK() {
+    if (document.visibilityState === 'hidden') {
         if(document.querySelector("#chat-content .recent:last-of-type"))
             document.querySelector("#chat-content .recent:last-of-type").setAttribute('data-miss', 1)
     }
