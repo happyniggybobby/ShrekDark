@@ -561,7 +561,7 @@ async function convertInvite(mess) {
                 mess.appendChild(d);
             }
         }
-        chatContent.scrollTop = chatContent.scrollHeight;
+        if(chatBox.classList.contains('closed')) chatContent.scrollTop = chatContent.scrollHeight;
     }
 }
 
@@ -775,6 +775,43 @@ document.addEventListener('visibilitychange', () => {
         setTimeout(() => { e.removeAttribute('data-miss'); }, 5000);
     });
 })
+
+// chat expand bar
+const chatExpand = document.createElement('div');
+chatExpand.textContent = '⋯';
+chatExpand.classList.add('chat-expand');
+chatExpand.setAttribute('draggable', 'true');
+
+let yStart = 0, deltaH = 0, chatMaxHeight = parseInt(getComputedStyle(chatContent).maxHeight), 
+chatMinMaxHeight = 50, chatMaxMaxHeight = chatMaxHeight;
+// console.log(chatMaxHeight);
+chatExpand.addEventListener("mousedown", (e) => {
+    yStart = e.clientY;
+    document.addEventListener("mousemove", resizeChat);
+    document.addEventListener("mouseup", () => {
+        document.removeEventListener("mousemove", resizeChat);
+    }, {once: true});
+});
+
+function resizeChat(e) {
+    e.preventDefault();
+    console.log('resizing');
+    deltaH = yStart - e.clientY;
+    yStart = e.clientY;
+    chatMaxHeight += deltaH;
+    console.log(chatMaxHeight);
+    if(chatMaxHeight < chatMinMaxHeight) chatMaxHeight = chatMinMaxHeight;
+    else if(chatMaxHeight > chatContent.getBoundingClientRect().bottom) chatMaxHeight = chatMaxMaxHeight;
+    // if(chatMaxHeight > window.innerHeight - chatContent.getBoundingClientRect().bottom) chatMaxHeight = chatContent.getBoundingClientRect().bottom;
+    console.log(chatMaxHeight);
+    // chatContent.style.maxHeight = `${chatMaxHeight}px`;
+    chatBox.style.setProperty('--chatMaxHeight', `${chatMaxHeight}px`);
+    chatContent.scrollTop = chatContent.scrollHeight
+}
+
+
+chatBox.prepend(chatExpand);
+
 
 manage.addEventListener('click', () => {managerPro();})
 
@@ -1046,7 +1083,7 @@ function showPlayerList() {
         playerList.classList.remove('recent');
         showPlayerListCooldown = false;
     }, 10000)
-    chatContent.scrollTop = chatContent.scrollHeight;
+    if(chatBox.classList.contains('closed')) chatContent.scrollTop = chatContent.scrollHeight;
 }
 
 async function changeGravity(direction) {

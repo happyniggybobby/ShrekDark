@@ -263,6 +263,27 @@ body:not(:has(#rejoin_button.dnone)) #chat.closed #chat-content p[data-miss] div
     pointer-events: all;
 }
 
+.chat-expand {
+    position: absolute;
+    top: 0;
+    left: 5%;
+    width: 90%;
+    height: 14px;
+    border-radius: 5px;
+    text-align: center;
+    transition: box-shadow 200ms;
+    line-height: 14px;
+    cursor: row-resize;
+}
+
+.chat-expand:hover {
+    box-shadow: inset white 0 0 5px;
+}
+
+.closed .chat-expand {
+    display: none;
+}
+
 /* chat animations */
 
 #chat-input{
@@ -277,6 +298,26 @@ body:not(:has(#rejoin_button.dnone)) #chat.closed #chat-content p[data-miss] div
 
 #chat-content{
     position: relative;
+    max-height: var(--chatMaxHeight, 300px)!important;
+}
+
+#chat::before{
+    content: '';
+    position: absolute;
+    bottom: calc(115px + var(--chatMaxHeight, 300px));
+    left: 0;
+    height: 10px;
+    width: 100%;
+    box-shadow: inset -20px 75px 30px -80px #712020;
+    border-radius: 10px;
+}
+
+#chat.closed::before{
+    display: none;
+}
+
+.closed #chat-content{
+    max-height: 300px!important;
 }
 
 #chat-content > p {
