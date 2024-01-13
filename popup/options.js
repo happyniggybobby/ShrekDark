@@ -273,7 +273,7 @@ langInInput.onchange = () => { setTrans() }
 langOutInput.onchange = () => { setTrans() }
 
 function setTrans() {
-    chrome.storage.sync.set({ transl: [langInInput.value || 'en', langOutInput.value || 'ru', autoLangInput.checked || false] });
+    chrome.storage.sync.set({ transl: [langInInput.value || 'en', langOutInput.value || 'en', autoLangInput.checked || false] });
     info('Successfully changed');
 }
 
@@ -409,6 +409,27 @@ document.querySelector('#defaultUI').onclick = () => {
     uiOpacityInput.value = 0.9;
     uiInput.dispatchEvent(new Event('change'));
 }
+
+// Chat Max Height
+
+const chatMaxInput = document.querySelector("#chatmaxheight");
+
+document.querySelector('#saveChatMaxHeight').onclick = () => {
+    if(chatMaxInput.value < 50) return info('Height can\'t be lower than 50px!', false);
+    if(chatMaxInput.value > 2000) return info('Height can\'t be higher than 2000px!', false);
+    chrome.storage.sync.set({ chatmaxheight: chatMaxInput.value });
+    info('Successfully changed');
+}
+
+document.querySelector('#defaultChatMaxHeight').onclick = () => {
+    chatMaxInput.value = '300';
+    chrome.storage.sync.remove('chatmaxheight');
+    info('Successfully restored');
+}
+
+chrome.storage.sync.get("chatmaxheight", function (result) {
+    chatMaxInput.value = result.chatmaxheight;
+});
 
 // Texture pack
 

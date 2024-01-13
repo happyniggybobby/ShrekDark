@@ -72,6 +72,12 @@ observeNode(exit, () => {
         document.querySelector('#copy_invite').classList.add('dnone');
         document.querySelector('#instant_save').classList.add('dnone');
         copterState = false;
+        showPlayerListCooldown = false;
+        const mess = document.createElement('p');
+        const messB = document.createElement('b');
+        messB.textContent = `${playerID} left the ship`;
+        mess.append(messB);
+        chatContent.append(mess);
     }
 }, true);
 observeNode(manage, () => {
@@ -79,40 +85,6 @@ observeNode(manage, () => {
     document.querySelector('#instant_save').classList.remove('dnone');
     document.querySelector('#copy_invite').classList.remove('dnone');
 }, true);
-
-
-// const chat=document.querySelector("#chat");
-// const chatCon=document.querySelector("#chat-content");
-// const hide=document.querySelector("#opt_chat_bubbles")
-// const w=["merry christmas", "happy holidays", "ho ho ho", 'bonjor', 'oi', '']; 
-// let oldoldi=0;
-// let oldi=1;
-
-// const configJ = { attributes: false, childList: true, subtree: false };
-
-// let observer = new MutationObserver(mutationRecords => {
-//     console.log(mutationRecords[0].target.lastChild.textContent);
-//     mutationRecords[0].target.lastChild.remove();
-//     observer.disconnect();
-//   });
-
-// observer.observe(chatCon, configJ);
-
-// setInterval(() => {
-//     if(document.activeElement==chatInp) return;
-//     let i;
-//     do{
-//         i=Math.floor(Math.random()*w.length);
-//     }while(i==oldi || i==oldoldi)
-//     oldoldi=oldi;
-//     oldi=i;
-//     chatBtn.click();
-//     if(!hide.checked) hide.click();
-//     chatInp.value = w[i];
-//     chatBtn.click();
-//     observer.observe(chatCon, configJ);
-// }, 20000);
-
 
 chrome.storage.sync.get("key", function (result) {
     let arr = result.key;
@@ -357,7 +329,7 @@ function addChatTrans() {
 
     translateButton.onclick = async () => {
         if (!chatInp.value || !langIn.value) return;
-        [chatInp.value, _] = await translate(chatInp.value, 'auto', langIn.value);
+        [chatInp.value, _] = await translate(chatInp.value, 'auto', langIn.value == "" ? 'en' : langIn.value);
     }
 
     const autoTransLabel = document.createElement('label');
@@ -415,88 +387,20 @@ function addRejoin() {
     rejoinB.onclick = function () {
         if (document.title.includes("- Deep")) {
             exit.click();
-            const target = [...document.querySelectorAll('.sy-id')].filter(x => x.textContent == cShip)[0];
-            if(target) return target.click();
-            document.querySelector('#shipyard section:nth-of-type(3) .btn-small').click();
-            setTimeout(() => {
-                target.click();
-            }, 300);
+            rejoinShip(cShip);
         }
     }
     buttonContainer.insertBefore(rejoinB, exit);
 }
 
-//  future warning: original autofill works only if autofiled commands are lowercase
-// const chatCommands = {
-//     outfit: [false, 'fit'],
-//     save: [false, 'sv'],
-//     kick: [true, 'kck'],
-//     ban: [true, 'bna'],
-//     loader_cycle_time: [true, 'lct'],
-//     lockdown: [true, 'lck']
-// }
-
-// if(isTest()) {
-//     Object.assign(chatCommands, chatCommands, {
-//         noclip: [false, 'nclp'],
-//         slew: [false, 'slw'],
-//         home: [false, 'hm'],
-//     })
-// }
-
-// const autoComplete = document.querySelector('#chat-autocomplete');
-// // chat input listener
-// chatInp.oninput = function() {
-//     if(this.value.charAt(0) === '/') {
-//         const current = this.value.trim().slice(1).toLowerCase();
-//         if(chatCommands.hasOwnProperty(current) && chatCommands[current][0]) return;
-//         if(isCap()) {
-//             const filler = Object.entries(chatCommands).filter((c) => c[0].toLowerCase().includes(current) || c[1][1].toLowerCase().includes(current));
-//             showAutocomplete(filler);
-//         } else showAutocomplete([['outfit', [false, 'fit']]]);
-//     }
-// }
-
-// var prevComp = '';
-// observeNode(autoComplete, () => {
-//     console.log(autoComplete.innerHTML);
-//     if(autoComplete.innerHTML === '') autoComplete.innerHTML = prevComp;
-//     prevComp = autoComplete.innerHTML;
-// }, true)
-
-// function showAutocomplete(list) {
-//     autoComplete.classList.add('hello');
-//     autoComplete.replaceChildren();
-//     for(const [command, action] of list) {
-//         const p = document.createElement('p');
-//         p.textContent = command;
-//         if(!action[0]) p.setAttribute('data-cmd', `/${command}`);
-//         p.onclick = () => {
-//             if(action[0]) {
-//                 chatInp.value = `/${command} `;
-//                 chatInp.dispatchEvent(new Event('input'));
-//             } else {
-//                 chatInp.value = `/${command}`;
-//                 chatBtn.click();
-//             }        
-//         }
-//         autoComplete.prepend(p);
-//         autoComplete.style.display = '';
-//     }
-// }
-
-// chatBox.addEventListener('keydown', (e)=> {
-//     if(e.key == 'Enter') {
-//         const a = document.querySelector('#chat-autocomplete .active:not([data-cmd])');
-//         if(a) {
-//             setTimeout(() => {
-//                 chatBtn.click();
-//                 chatInp.value = `/${a.textContent} `;
-//                 chatInp.dispatchEvent(new Event('input'));
-//             }, 50);
-//         }
-//     }
-// })
+function rejoinShip(name) {
+    const target = [...document.querySelectorAll('.sy-id')].filter(x => x.textContent == name)[0];
+    if(target) return target.click();
+    document.querySelector('#shipyard section:nth-of-type(3) .btn-small').click();
+    setTimeout(() => {
+        target.click();
+    }, 500);
+}
 
 //chat observer
 observeNode(chatContent, () => {
@@ -783,31 +687,37 @@ chatExpand.classList.add('chat-expand');
 chatExpand.setAttribute('draggable', 'true');
 
 let yStart = 0, deltaH = 0, chatMaxHeight = parseInt(getComputedStyle(chatContent).maxHeight), 
-chatMinMaxHeight = 50, chatMaxMaxHeight = chatMaxHeight;
-// console.log(chatMaxHeight);
+chatMinMaxHeight = 50;
 chatExpand.addEventListener("mousedown", (e) => {
     yStart = e.clientY;
-    document.addEventListener("mousemove", resizeChat);
+    document.addEventListener("mousemove", resizeChatEvent);
     document.addEventListener("mouseup", () => {
-        document.removeEventListener("mousemove", resizeChat);
+        document.removeEventListener("mousemove", resizeChatEvent);
     }, {once: true});
 });
 
-function resizeChat(e) {
+function resizeChatEvent(e) {
     e.preventDefault();
-    console.log('resizing');
     deltaH = yStart - e.clientY;
     yStart = e.clientY;
     chatMaxHeight += deltaH;
-    console.log(chatMaxHeight);
     if(chatMaxHeight < chatMinMaxHeight) chatMaxHeight = chatMinMaxHeight;
-    else if(chatMaxHeight > chatContent.getBoundingClientRect().bottom) chatMaxHeight = chatMaxMaxHeight;
-    // if(chatMaxHeight > window.innerHeight - chatContent.getBoundingClientRect().bottom) chatMaxHeight = chatContent.getBoundingClientRect().bottom;
-    console.log(chatMaxHeight);
-    // chatContent.style.maxHeight = `${chatMaxHeight}px`;
+    else if(chatMaxHeight > chatContent.getBoundingClientRect().bottom) chatMaxHeight = chatContent.getBoundingClientRect().bottom;
     chatBox.style.setProperty('--chatMaxHeight', `${chatMaxHeight}px`);
     chatContent.scrollTop = chatContent.scrollHeight
 }
+
+function resizeChat() {
+    chatBox.style.setProperty('--chatMaxHeight', `${chatMaxHeight}px`);
+    chatContent.scrollTop = chatContent.scrollHeight
+}
+chrome.storage.sync.get("chatmaxheight", function (result) {
+    if(result.chatmaxheight) {
+        chatMaxHeight = parseInt(result.chatmaxheight);
+        resizeChat();
+    }
+});
+
 
 
 chatBox.prepend(chatExpand);
@@ -928,6 +838,31 @@ function addCopyInvite() {
     inviteBtn.onclick = function () { sendChat('/invite'); }
     buttonContainer.prepend(inviteBtn);
 }
+
+observeNode(disconnectPopup, () => {
+    const n = new Date();
+    const f = n.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    disconnectPopup.querySelector('h2').textContent = `DISCONNECTED [at ${f}]`;
+    if(disconnectPopup.querySelector('p .btn-white')) return;
+
+    const btnRejoin = document.createElement('button');
+    btnRejoin.classList.add('btn', 'btn-small', 'btn-orange');
+    btnRejoin.textContent = 'Try to rejoin';
+    btnRejoin.onclick = function () {
+        disconnectPopup.querySelector('p button').click();
+        rejoinShip(cShip);
+    }
+    disconnectPopup.querySelector('p').append(btnRejoin);
+
+    const btnQuickChat = document.createElement('button');
+    btnQuickChat.classList.add('btn', 'btn-small', 'btn-white');
+    btnQuickChat.textContent = 'Open Chat';
+    btnQuickChat.onclick = function () {
+        chatBtn.click();
+    }
+    disconnectPopup.querySelector('p').append(btnQuickChat);
+
+}, true, { childList: false, attributes: true, subtree: false });
 
 const base64ToFile = url => {
     let arr = url.split(',');

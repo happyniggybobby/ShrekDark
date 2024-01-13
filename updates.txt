@@ -226,10 +226,23 @@
 - fixed chat commands autofill not showing after new update
 
 3.7
+- chat:
+ - expandable chat - drag top of the chat
+ - new chat default size setting
+ - fixed chat scroll offset issues
+ - player list 
+  - has cooldown 
+  - message when you are alone
+  - player count
+ - fixed chat rounding on chrome
+ - display "{yourName} left the ship", when you left
+
+- small css upgrades
+- fixed default translation settings
+- fixed input message not translating on default setting
+- timestamp at disconnect message
 - exiting ship stops snakecopter
-- fixed chat scroll offset issues
-- alligned chat timestamp position
 - / and ' toggle now correctly resets after switching tabs
 - removed custom nest ads
-
-- player list has cooldown and message when you are alone
+- refreshed popup about
+- added to github

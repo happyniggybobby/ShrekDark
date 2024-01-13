@@ -99,7 +99,7 @@ button a {
     background: linear-gradient(#1353a5, #000 200%) !important;
 }
 
-.btn-white {
+.btn-small.btn-white {
     background: linear-gradient(#fff, #000 200%) !important;
     color: black!important;
 }
@@ -228,6 +228,10 @@ button.dnone, select.dnone {
     transition: background 150ms;
 }
 
+#chat-content {
+    overflow-y: scroll;
+}
+
 #chat-content div {
     margin-top: 10px;
 }
@@ -265,9 +269,9 @@ body:not(:has(#rejoin_button.dnone)) #chat.closed #chat-content p[data-miss] div
 
 .chat-expand {
     position: absolute;
-    top: 0;
-    left: 5%;
-    width: 90%;
+    top: 4px;
+    left: 35%;
+    width: 30%;
     height: 14px;
     border-radius: 5px;
     text-align: center;
@@ -299,6 +303,7 @@ body:not(:has(#rejoin_button.dnone)) #chat.closed #chat-content p[data-miss] div
 #chat-content{
     position: relative;
     max-height: var(--chatMaxHeight, 300px)!important;
+    border-radius: 10px;
 }
 
 #chat::before{
@@ -306,10 +311,17 @@ body:not(:has(#rejoin_button.dnone)) #chat.closed #chat-content p[data-miss] div
     position: absolute;
     bottom: calc(115px + var(--chatMaxHeight, 300px));
     left: 0;
-    height: 10px;
+    height: 40px;
     width: 100%;
-    box-shadow: inset -20px 75px 30px -80px #712020;
+    box-shadow: inset  0px -100px 35px -100px rgba(25,35,45, .9);
     border-radius: 10px;
+    opacity: 0;
+    transition: opacity 150ms;
+}
+
+
+#chat:has(.chat-expand:is(:hover, :active))::before {
+    opacity: 1;
 }
 
 #chat.closed::before{
@@ -329,16 +341,6 @@ body #chat #chat-content > p.recent {
     animation: slide-left 125ms ease-out;
     opacity: 1;
     transform: none;
-}
-
-#chat-content :nth-child(1 of .recent), #chat-content :nth-child(1 of [data-miss]) {
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-}
-
-#chat-content .recent:last-child, #chat-content [data-miss]:last-child {
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
 }
 
 @keyframes slide-left {
@@ -377,7 +379,7 @@ body #chat #chat-content > p.recent {
 #chat-content > p::after {
     position: absolute;
     right: 4px;
-    top: 6px;
+    top: 0;
     content: attr(data-time);
     color: #999;
     font-weight: 600;
@@ -484,7 +486,7 @@ body:not(:has(#rejoin_button.dnone)) #chat.closed #chat-content p[data-miss] {
 
 /* Translate menu */
 #chat > #lang-input{
-    max-width: 20px;
+    max-width: 30px;
     border-radius: 5px;
     background-color: transparent;
     border: 2px solid white;

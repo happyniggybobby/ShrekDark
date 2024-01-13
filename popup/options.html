@@ -11,7 +11,7 @@
     <ul id="messageContainer"></ul>
     <div>
         <img src="../img/icon100.png" alt="Extension icon">
-        <h1>ShrekDark 3.6</h1>
+        <h1>ShrekDark 3.7</h1>
         <a class="big" href="popup.html">About</a>
         <a class="big active" href="options.html">Settings</a>
     </div>
@@ -89,9 +89,9 @@
         <p><a class="btn" target="_blank" href="https://cloud.google.com/translate/docs/languages">Language codes</a></p>
         <hr>
         <p>Choose language that you want phrases to be translated into</p>
-        <label for="langIn-input">Translate chat to: </label>
+        <label for="langIn-input">Translate chat to: </label><br>
         <input type="text" id="langIn-input" maxlength="4"><br>
-        <label for="langOut-input">By default translate my messages to: </label>
+        <label for="langOut-input">By default translate my messages to: </label><br>
         <input type="text" id="langOut-input" maxlength="4">
         <p class="warning">Warning, enabling constant auto translation may cause lag</p>
         <label for="lang-auto">Auto translate chat</label>
@@ -218,6 +218,12 @@
         <label>Main color: <input type="color" id="uicolor"></label>
         <label>Opacity: <input type="range" id="uiopacity" min="0" max="1" step="0.1" value="0.9" width="40"></label>
         <button id="defaultUI" class="btn">Default</button>
+    </div>
+    <div>
+        <h2>Chat Height</h2>
+        <label>Max Chat Height: <input type="number" id="chatmaxheight" min="100" max="999" maxlength="3" placeholder="300"></label> px
+        <button id="saveChatMaxHeight" class="btn">Save</button>
+        <button id="defaultChatMaxHeight" class="btn">Default</button>
     </div>
     <script src="options.js"></script>
 </body>
