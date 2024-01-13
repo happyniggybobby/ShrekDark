@@ -237,6 +237,7 @@
  - fixed chat rounding on chrome
  - display "{yourName} left the ship", when you left
 
+- enhanced kicked out screen - time, rejoin, view chat
 - small css upgrades
 - fixed default translation settings
 - fixed input message not translating on default setting
