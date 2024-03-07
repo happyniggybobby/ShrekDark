@@ -247,3 +247,4 @@
 - removed custom nest ads
 - refreshed popup about
 - added to github
+- fixed typo in About section
