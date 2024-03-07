@@ -241,6 +241,7 @@ function addFavShips() {
         if (result.fav == undefined || result.fav.length == 0) return;
         const menu = document.querySelector('#shipyard > .window');
         const favShips = document.createElement('section');
+        favShips.classList.add('fav-ships');
         const favName = document.createElement('h3');
         favName.textContent = 'Favourite ships';
         favShips.append(favName);
@@ -439,8 +440,8 @@ async function convertInvite(mess) {
         mess.replaceChildren();
         mess.append(messB, messContent);
         if (document.URL.includes('test') ^ link[0].includes('test')) {
-            const d = document.createElement('div');
-            d.append(...generateInviteCard(`Invitation to ${link[0].slice(8, -32)} ship.`, link));
+            const d = generateInviteCard(`Invitation to ${link[0].slice(8, -32)} ship.`, link);
+            d.classList.add('invite-container');
             mess.appendChild(d);
         } else {
             try {
@@ -448,11 +449,10 @@ async function convertInvite(mess) {
                 const html = await response.text();
                 const parser = new DOMParser();
                 const meta = parser.parseFromString(html, "text/html").querySelectorAll("meta[property]");
-                const d = document.createElement('div');
-
-                d.append(...generateInviteCard(`Invitation to ${meta[0].getAttribute('content').slice(8, -13)}`, link));
-
+                const d = generateInviteCard(`Invitation to ${meta[0].getAttribute('content').slice(8, -13)}`, link);
+                
                 const d2 = document.createElement('div');
+                d2.classList.add('invite-container');
                 const img = new Image();
                 img.src = meta[4].getAttribute('content');
                 img.onerror = function () { this.src = '/x/asset.2jrQzPpjHFBAjBV0wwRh.png'; }
@@ -460,8 +460,8 @@ async function convertInvite(mess) {
                 d2.appendChild(d);
                 mess.appendChild(d2);
             } catch (er) {
-                const d = document.createElement('div');
-                d.append(...generateInviteCard(`Invitation is broken or goes to LABS.`, link));
+                const d = generateInviteCard(`Invitation is broken or goes to LABS.`, link);
+                d.classList.add('invite-container');
                 mess.appendChild(d);
             }
         }
@@ -479,8 +479,8 @@ async function convertCommsInvite(mess) {
         mess.replaceChildren();
         mess.append(messBdi, messContent);
         if (document.URL.includes('test') ^ link[0].includes('test')) {
-            const d = document.createElement('div');
-            d.append(...generateInviteCard(`Invitation to ${link[0].slice(8, -32)} ship.`, link));
+            const d = generateInviteCard(`Invitation to ${link[0].slice(8, -32)} ship.`, link);
+            d.classList.add('invite-container');
             mess.appendChild(d);
         } else {
             try {
@@ -488,11 +488,10 @@ async function convertCommsInvite(mess) {
                 const html = await response.text();
                 const parser = new DOMParser();
                 const meta = parser.parseFromString(html, "text/html").querySelectorAll("meta[property]");
-                const d = document.createElement('div');
-
-                d.append(...generateInviteCard(`Invitation to ${meta[0].getAttribute('content').slice(8, -13)}`, link));
+                const d = generateInviteCard(`Invitation to ${meta[0].getAttribute('content').slice(8, -13)}`, link);
 
                 const d2 = document.createElement('div');
+                d2.classList.add('invite-container');
                 const img = new Image();
                 img.src = meta[4].getAttribute('content');
                 img.onerror = function () { this.src = '/x/asset.2jrQzPpjHFBAjBV0wwRh.png'; }
@@ -500,8 +499,8 @@ async function convertCommsInvite(mess) {
                 d2.appendChild(d);
                 mess.appendChild(d2);
             } catch (er) {
-                const d = document.createElement('div');
-                d.append(...generateInviteCard(`Invitation is broken or goes to LABS.`, link));
+                const d = generateInviteCard(`Invitation is broken or goes to LABS.`, link);
+                d.classList.add('invite-container');
                 mess.appendChild(d);
             }
         }
@@ -510,6 +509,7 @@ async function convertCommsInvite(mess) {
 }
 
 function generateInviteCard(text, url) {
+    const inviteD = document.createElement('div');
     const inviteB = document.createElement('b');
     const inviteP = document.createElement('p');
     inviteP.textContent = text;
@@ -528,7 +528,8 @@ function generateInviteCard(text, url) {
         // inviteBtn.append(inviteA);
         inviteButtons.append(inviteBtn);
     })
-    return [inviteB, inviteButtons];
+    inviteD.append(inviteB, inviteButtons);
+    return inviteD;
 }
 
 async function translateChatMessage(p) {

@@ -247,4 +247,7 @@
 - removed custom nest ads
 - refreshed popup about
 - added to github
+
+3.7.1
+-  fixed badges breaking chat styling
 - fixed typo in About section

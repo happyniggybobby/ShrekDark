@@ -232,37 +232,37 @@ button.dnone, select.dnone {
     overflow-y: scroll;
 }
 
-#chat-content div {
+#chat-content .invite-container {
     margin-top: 10px;
 }
 
-#chat-content div p a {
+#chat-content .invite-container p a {
     margin: 2px;
 }
 
-#chat-content div a {
+#chat-content .invite-container a {
     color: white !important;
 }
 
-#chat-content div img {
+#chat-content .invite-container img {
     display: inline-block;
     width: 30%;
     margin-right: 10px;
 }
 
-#chat-content div div {
+#chat-content .invite-container div {
     display: inline-block;
     width: 60%;
     vertical-align: top;
 }
 
-#chat.closed #chat-content p.recent div p,
-body:not(:has(#rejoin_button.dnone)) #chat.closed #chat-content p[data-miss] div p {
+#chat.closed #chat-content p.recent .invite-container p,
+body:not(:has(#rejoin_button.dnone)) #chat.closed #chat-content p[data-miss] .invite-container p {
     display: block;
 }
 
-#chat.closed #chat-content p.recent div p a,
-body:not(:has(#rejoin_button.dnone)) #chat.closed #chat-content p[data-miss] div p a {
+#chat.closed #chat-content p.recent .invite-container p a,
+body:not(:has(#rejoin_button.dnone)) #chat.closed #chat-content p[data-miss] .invite-container p a {
     visibility: visible;
     pointer-events: all;
 }
@@ -412,17 +412,17 @@ body:not(:has(#rejoin_button.dnone)) #chat.closed #chat-content p[data-miss] {
     position: relative;
 }
 
-#comms-text p div {
+#comms-text p .invite-container {
     margin-top: 10px;
 }
 
-#comms-text div > img {
+#comms-text .invite-container > img {
     display: inline-block;
     width: 17%;
     margin-right: 10px;
 }
 
-#comms-text div > div {
+#comms-text .invite-container > div {
     display: inline-block;
     width: 80%;
     vertical-align: top;
@@ -549,20 +549,20 @@ body:not(:has(#rejoin_button.dnone)) #chat.closed #chat-content p[data-miss] {
     background: linear-gradient(#4a4, #000 200%) !important;
 }
 
-#shipyard section:nth-of-type(1) div.server-offline {
+#shipyard section div.server-offline {
     box-shadow: inset 0 0 10px #a22;
 }
 
-#shipyard section:nth-of-type(4) > :first-child{
+#shipyard .fav-ships > :first-child{
     grid-column: 1 / 3;
 }
 
-#shipyard section:nth-of-type(4){
+#shipyard .fav-ships {
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
 
-#shipyard section:nth-of-type(4) div {
+#shipyard .fav-ship div {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -636,6 +636,7 @@ body:not(:has(#rejoin_button.dnone)) #chat.closed #chat-content p[data-miss] {
 
 input[type=range]:not(.color-slider) {
     -webkit-appearance: none;
+    appearance: none;
     background: transparent !important;
     border: none !important;
 }
