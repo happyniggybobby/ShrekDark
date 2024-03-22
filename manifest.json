@@ -1,7 +1,7 @@
 {
     "name": "ShrekDark",
     "description": "Shrek's custom extension. Everything that should already be in the game... and more",
-    "version": "3.7",
+    "version": "3.7.1",
     "author": "I am Shrek",
     "manifest_version": 3,
     "content_scripts": [
