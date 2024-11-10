@@ -249,5 +249,20 @@
 - added to github
 
 3.7.1
--  fixed badges breaking chat styling
+- fixed badges breaking chat styling
 - fixed typo in About section
+
+3.8
+Menu:
+- adjusted menu design to updates
+- start typing to filter ships immediately after page load
+- fixed styling of fav ships
+
+Chat:
+- fixed badges allignment
+- fixed player list being empty upon joining
+- added translation indicator
+- hid chat timestamps
+- fixed chat resizing bugging out
+- fixed scrollbar background color
+- restricted easter egg message

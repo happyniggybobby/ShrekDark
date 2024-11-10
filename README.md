@@ -7,7 +7,7 @@ Quality of Life extension for [drednot.io game](https://drednot.io/)
 
 Customize your experience to your liking
 For any questions, refer to this [discord server](https://discord.gg/EsxkNNX4rK)
-Extension developed by I am Shrek - Kapi73#3815
+<span>Extension developed by I am Shrek - Kapi73#3815</span>
 
 <h4>Chat Enhancements</h4>
 <ul>

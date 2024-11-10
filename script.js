@@ -46,12 +46,54 @@ let chatTranslate = document.getElementById("opt_chat_translate");
 const langInput = document.getElementById("lang-input");
 let pingsBox = document.querySelector('#top-bar select:nth-of-type(2)')
 
+const welcomeMessages = [
+    "Welcome aboard Captain. All systems online. ",
+    "Welcome back ",
+    "Ahoy ",
+    "Ahead flank; emergency speed. #",
+    "Hello ",
+    "Greetings ",
+    "Let's gyyat those ships mr. ",
+    "Hey, You, You're finally awake ",
+    "Rise and shine ",
+    "All we had to do, was follow the damn ship ",
+    "Wake up, Samurai. We have a ship to burn, mr ",
+    "Nanomachines, ",
+    "The cake is ",
+    "It's A Me, ",
+    "It's dangerous to go alone, go with ",
+];
+
+// After menu is loaded
 observeNode(bigUiContainer, () => {
     addBtnServer();
     addFavShips();
     addEmergCall();
     shipYard = document.getElementById("shipyard-ships");
+
+    // account    
     playerID = document.querySelector('#shipyard code.user').textContent;
+    const welcomeMsg = document.createElement('h3');
+    welcomeMsg.textContent = welcomeMessages[Math.floor(Math.random() * welcomeMessages.length)];
+    const playerIDspan = document.createElement('code');
+    playerIDspan.classList.add('user');
+    playerIDspan.textContent = playerID;
+    const playerBackgroundColor = document.querySelector('#shipyard code.user').style.background;
+    const gradientStyle = `linear-gradient(${playerBackgroundColor}, transparent 200%)`;
+    playerIDspan.style = document.querySelector('#shipyard code.user').style.cssText + `; background: ${gradientStyle};`;
+    welcomeMsg.append(playerIDspan);
+
+    // removing original account info
+    document.querySelector('#shipyard section:nth-of-type(2) h3').classList.add('dnone');
+    document.querySelector('#shipyard section:nth-of-type(2) p').classList.add('dnone');
+
+    // adding new account info
+    document.querySelector('#shipyard section:nth-of-type(2)').prepend(welcomeMsg);
+
+    // ship list
+    const nameInput = document.querySelector('#shipyard section:nth-of-type(3) p input');
+    nameInput.setAttribute("placeholder", "Search By Name");
+    nameInput.focus();
 });
 
 // observeNode(bigUiContainer, () => {
@@ -73,11 +115,13 @@ observeNode(exit, () => {
         document.querySelector('#instant_save').classList.add('dnone');
         copterState = false;
         showPlayerListCooldown = false;
-        const mess = document.createElement('p');
-        const messB = document.createElement('b');
-        messB.textContent = `${playerID} left the ship`;
-        mess.append(messB);
-        chatContent.append(mess);
+        if(playerID != '') {
+            const mess = document.createElement('p');
+            const messB = document.createElement('b');
+            messB.textContent = `${playerID} (You) left the ship`;
+            mess.append(messB);
+            chatContent.append(mess);
+        }
     }
 }, true);
 observeNode(manage, () => {
@@ -246,11 +290,11 @@ function addFavShips() {
         favName.textContent = 'Favourite ships';
         favShips.append(favName);
         menu.append(favShips);
-        const favShipsBox = document.createElement('select');
-        favShipsBox.classList.add('btn', 'btn-small', 'btn-darkBlue');
+        const favShipsBtn = document.createElement('select');
+        favShipsBtn.classList.add('btn', 'btn-small', 'btn-darkBlue');
         const pc = document.createElement('option');
         pc.textContent = 'Fav Ships';
-        favShipsBox.append(pc);
+        favShipsBtn.append(pc);
         result.fav.forEach(nameID => {
             if(nameID[1] == 0) return;
             const favShip = document.createElement('div');
@@ -262,13 +306,13 @@ function addFavShips() {
             const fb = document.createElement('option');
             fb.textContent = nameID[0];
             fb.value = nameID[1];
-            favShipsBox.append(fb);
+            favShipsBtn.append(fb);
         });
-        favShipsBox.oninput = function () {
-            window.open(`https://drednot.io/?ship=${favShipsBox.value}`);
+        favShipsBtn.oninput = function () {
+            window.open(`https://drednot.io/?ship=${favShipsBtn.value}`);
             pc.selected = true;
         }
-        if(result.fav.findIndex(b => b[1] == 0) == -1) topBar.append(favShipsBox);
+        if(result.fav.findIndex(b => b[1] == 0) == -1) topBar.append(favShipsBtn);
     });
 }
 
@@ -278,7 +322,7 @@ function addChatPhrases() {
         const wordsBox = document.createElement('select');
         chatBox.append(wordsBox);
         const pc = document.createElement('option');
-        pc.textContent = 'Phrases';
+        pc.textContent = 'Words';
         wordsBox.append(pc);
         result.word.forEach(mess => {
             const cb = document.createElement('option');
@@ -297,7 +341,7 @@ function addEmergCall() {
     chrome.storage.sync.get("ping", function (result) {
         if (result.ping == undefined || result.ping.length == 0) return;
         pingsBox = document.createElement('select');
-        pingsBox.classList.add('btn', 'btn-small', 'btn-blue', 'dnone');
+        pingsBox.classList.add('btn', 'btn-small', 'btn-blue');
         const pc = document.createElement('option');
         pc.textContent = 'Emergency';
         pingsBox.append(pc);
@@ -319,7 +363,7 @@ function addEmergCall() {
 let lang = 'en';
 function addChatTrans() {
     const translateButton = document.createElement('i');
-    translateButton.classList.add('fas', 'fa-globe', 'btn-blue', 'btn');
+    translateButton.classList.add('fas', 'fa-globe', 'btn-gray', 'btn');
 
     const langIn = document.createElement('input');
     langIn.id = 'lang-input';
@@ -353,7 +397,7 @@ function addChatTrans() {
 chrome.storage.sync.get("colors", function (result) {
     let colors;
     if (result.colors == null) {
-        colors = ['#0000004d', '#b7b7b7'];
+        colors = ['#000000', '#b7b7b7', '4d'];
     } else
         colors = result.colors;
     document.body.style.setProperty('--scrollTrack', `${colors[0]}${colors[2]}`);
@@ -417,7 +461,7 @@ observeNode(chatContent, () => {
     else mess.addEventListener("dblclick", () => { translateChatMessage(mess) }, { once: true });
     convertInvite(mess);
     if (isCap()) addPlayer(mess);
-    if(mess.textContent.includes('someBODY') && !mess.textContent.includes(playerID)) sendFunnyChat('once told me the world is gonna roll me');
+    if(mess.textContent.includes('Do The Roar!') && !mess.textContent.includes(playerID)) sendFunnyChat('roar');
 }, true, { childList: true, attributes: false, subtree: false });
 
 //comms observer
@@ -539,6 +583,8 @@ async function translateChatMessage(p) {
     if (!t) return;
     try {
         const [trans, origin] = await translate(t, 'auto', lang);
+        const messIcon = document.createElement('i');
+        messIcon.classList.add('fas' ,'fa-globe');
         const messBdi = p.querySelector('b');
         const messTrans = document.createElement('span');
         messTrans.setAttribute('data-trans', '');
@@ -547,7 +593,7 @@ async function translateChatMessage(p) {
         messPre.textContent = `${origin}: ${t.replaceAll('"', "&quot;")}`;
         messPre.onclick = () => { langInput.value = origin; }
         p.replaceChildren();
-        p.append(messBdi, messTrans, messPre);
+        p.append(messBdi, messIcon, messTrans, messPre);
         if (isCap()) addPlayer(p);
     } catch { return; }
 }
@@ -653,7 +699,8 @@ function addPlayer(mess) {
 async function promote(user, rank) {
     manage.click();
     tmenu.classList.add('hidden');
-    await swapManager(1);
+    if(!document.querySelector('#team_players_inner tbody'))
+        await swapManager(1);
     observeNode(document.querySelector('#team_players_inner tbody'), () => {
         const s = document.querySelectorAll('#team_players_inner td > code');
         if (s) {
@@ -665,11 +712,11 @@ async function promote(user, rank) {
                 select.value = rank;
                 select.dispatchEvent(new Event('change'));
             }
-            manage.click();
         }
         setTimeout(() => {
             tmenu.classList.remove('hidden');
-        }, 250)
+            manage.click();
+        }, 250);
     });
 }
 
@@ -685,31 +732,35 @@ document.addEventListener('visibilitychange', () => {
 const chatExpand = document.createElement('div');
 chatExpand.textContent = '⋯';
 chatExpand.classList.add('chat-expand');
-chatExpand.setAttribute('draggable', 'true');
+// chatExpand.setAttribute('draggable', 'true');
 
 let yStart = 0, deltaH = 0, chatMaxHeight = parseInt(getComputedStyle(chatContent).maxHeight), 
 chatMinMaxHeight = 50;
 chatExpand.addEventListener("mousedown", (e) => {
     yStart = e.clientY;
+    chatBox.classList.add('resizing');
+
     document.addEventListener("mousemove", resizeChatEvent);
     document.addEventListener("mouseup", () => {
+        chatBox.classList.remove('resizing');
         document.removeEventListener("mousemove", resizeChatEvent);
     }, {once: true});
 });
 
 function resizeChatEvent(e) {
     e.preventDefault();
+    chatMaxHeight = parseInt(getComputedStyle(chatContent).maxHeight)
     deltaH = yStart - e.clientY;
     yStart = e.clientY;
     chatMaxHeight += deltaH;
     if(chatMaxHeight < chatMinMaxHeight) chatMaxHeight = chatMinMaxHeight;
     else if(chatMaxHeight > chatContent.getBoundingClientRect().bottom) chatMaxHeight = chatContent.getBoundingClientRect().bottom;
-    chatBox.style.setProperty('--chatMaxHeight', `${chatMaxHeight}px`);
+    chatBox.style.setProperty('--chat-max-height', `${chatMaxHeight}px`);
     chatContent.scrollTop = chatContent.scrollHeight
 }
 
 function resizeChat() {
-    chatBox.style.setProperty('--chatMaxHeight', `${chatMaxHeight}px`);
+    chatBox.style.setProperty('--chat-max-height', `${chatMaxHeight}px`);
     chatContent.scrollTop = chatContent.scrollHeight
 }
 chrome.storage.sync.get("chatmaxheight", function (result) {
@@ -914,45 +965,57 @@ function switchTXT() {
 }
 
 function addBtnServer() {
-    const s = document.querySelector("#shipyard section:nth-of-type(1)");
-    if (isTest()) {
-        const serverBox = document.createElement('div');
-        const serverU = document.createElement('p');
-        const serverP = document.createElement('p');
-        serverU.textContent = 'Loading...';
-        serverP.textContent = '---';
-        serverBox.appendChild(serverU);
-        serverBox.appendChild(serverP);
-        s.insertAdjacentElement('beforeEnd', serverBox);
-    } else {
-        ["USA", "EU", "ASIA"].forEach((server, index) => {
-            const serverBox = document.createElement('div');
-            const serverH = document.createElement('h4');
-            serverH.textContent = server;
-            serverBox.onclick = function () { changeServer(index) }
-            serverBox.appendChild(serverH);
-            const serverU = document.createElement('p');
-            const serverP = document.createElement('p');
-            serverU.textContent = 'Loading...';
-            serverP.textContent = '---';
-            serverBox.appendChild(serverU);
-            serverBox.appendChild(serverP);
-            s.insertAdjacentElement('beforeEnd', serverBox);
-        });
-    }
-    s.querySelectorAll("#shipyard section:nth-of-type(1) div")[JSON.parse(localStorage.getItem("dredark_user_settings")).preferred_server].classList.add("server-selected");
-    const servBtns = document.querySelectorAll("#shipyard section:nth-of-type(1) div");
+    const serverSection = document.querySelector("#shipyard section:nth-of-type(1)");
     const options = document.querySelectorAll("#shipyard select option");
-    const stats = document.querySelectorAll("#shipyard section:nth-of-type(1) div p");
+    const servBtns = [];
+    const servStats = [];
+
+    options.forEach((server, index) => {
+        const serverData = getServerData(server.textContent);
+        const serverBox = document.createElement('div');
+        serverBox.classList.add('server-box', 'server-offline');
+        const serverHeader = document.createElement('h4');
+        serverHeader.textContent = serverData[1];
+        serverBox.onclick = () => { changeServer(index) };
+
+        const serverUsers = document.createElement('p');
+        const serverPing = document.createElement('p');
+        serverUsers.textContent = '';
+        serverPing.textContent = 'Loading...';
+
+        serverBox.append(serverHeader, serverUsers, serverPing);
+        serverSection.insertAdjacentElement('beforeEnd', serverBox);
+        servBtns.push(serverBox);
+        servStats.push(serverUsers, serverPing);
+    });
+    
+    serverSection.querySelectorAll("#shipyard section:nth-of-type(1) div")[JSON.parse(localStorage.getItem("dredark_user_settings")).preferred_server].classList.add("server-selected");
+
     observeNode(document.querySelector("#shipyard section:nth-of-type(1) select"), () => {
         for (let i = 0; i < servBtns.length; i++) {
-            const info = options[i].textContent;
-            if (info.includes('No')) servBtns[i].classList.add('server-offline');
-            else servBtns[i].classList.remove('server-offline');
-            stats[i * 2].textContent = info.includes('No') ? 'No Response' : info.substring(info.indexOf('-', 3) + 2, info.lastIndexOf('-') - 1);
-            stats[i * 2 + 1].textContent = info.includes('No') ? '' : info.substring(info.lastIndexOf('-') + 2)
+            const info = getServerData(options[i].textContent);
+                        
+            if (info[2] === 'No Response') {
+                servBtns[i].classList.add('server-offline');
+                servBtns[i].style = `--server-box-fill: 100%`;
+                servStats[i * 2].textContent = 'No Response';
+                servStats[i * 2 + 1].textContent = '';
+            } else {
+                servBtns[i].classList.remove('server-offline');
+
+                const users = info[2].split(' / ');
+                const fill = parseInt(users[0]) / parseInt(users[1]) * 100;
+                servBtns[i].style = `--server-box-fill: ${fill}%`;
+                servStats[i * 2].textContent = info[2];
+                servStats[i * 2 + 1].textContent = info[3];
+            }
         }
     }, true);
+}
+
+const getServerData = (text) => {
+    const serverData = text.split(' - ');
+    return serverData;
 }
 
 function changeServer(server) {
@@ -1001,9 +1064,13 @@ function showPlayerList() {
     playerList.append(plListB);
     chatContent.append(playerList);
 
-    if(players.length === 0) plListB.textContent = `It's only you here.`;
+    let cooldown = 10000;
+    if(players.length === 0) {
+        plListB.textContent = `It's only you here.`;
+        cooldown = 1000;
+    }
     else {
-        plListB.textContent = `There are ${players.length} other players in the ship:`;
+        plListB.textContent = `There are ${players.length} more players in the ship:`;
         const plListUl = document.createElement('ul');
         for(let player of players){
             const plListLi = document.createElement('li');
@@ -1018,7 +1085,7 @@ function showPlayerList() {
     setTimeout(() => {
         playerList.classList.remove('recent');
         showPlayerListCooldown = false;
-    }, 10000)
+    }, cooldown)
     if(chatBox.classList.contains('closed')) chatContent.scrollTop = chatContent.scrollHeight;
 }
 
@@ -1101,7 +1168,7 @@ function sendChat(mess) {
     chatBtn.click();
 }
 
-var chatTimeLimit = 2000, chatLastTime = 0;
+var chatTimeLimit = 60000, chatLastTime = 0;
 function sendFunnyChat(mess) {
     if(chatLastTime + chatTimeLimit >= Date.now()) return;
     chatLastTime = Date.now()
