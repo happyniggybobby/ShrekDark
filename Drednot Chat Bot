@@ -1,133 +1,152 @@
-const players = {};
-const fishTypes = {
-    common: ["Goldfish", "Carp", "Bass", "Perch", "Snapper", "Catfish", "Tilapia", "Mackerel", "Trout", "Bream", "Sardine", "Anchovy", "Minnow", "Herring", "Goby", "Mullet", "Chub", "Dace", "Roach", "Smelt"],
-    uncommon: ["Trout", "Pike", "Salmon", "Catfish", "Bass", "Crappie", "Shad", "Bluegill", "Barramundi", "Walleye", "Yellow Perch", "Silver Carp", "Red Drum", "Sheepshead", "Drumfish", "Rockfish", "White Bass", "Striped Bass", "Moonfish", "Cuttlefish"],
-    rare: ["Swordfish", "Piranha", "Salmon", "Rainbow Trout", "Tuna", "Blue Marlin", "Guppy", "Lionfish", "Barracuda", "Triggerfish", "Parrotfish", "Needlefish", "Flying Fish", "Mahimahi", "Cobia", "Gilt-head Bream", "Giant Trevally", "Opah", "Scorpionfish", "Bonefish"],
-    legendary: ["Shark", "Electric Eel", "Blue Marlin", "Sea Dragon", "Megalodon", "Swordfish", "Giant Manta Ray", "Abyssal Angler", "Giant Oarfish", "Colossal Squid", "Whale Shark", "Giant Grouper", "Goliath Tigerfish", "Vampire Squid", "Ghost Shark", "Titanic Moray", "Phantom Barracuda", "Kraken's Fang", "Thunderous Leviathan", "Deep Sea Horror"],
-    mythical: ["Kraken Tentacle", "Dragonfish", "Nautilus", "Sea Serpent", "Atlantean Whale", "Leviathan Fry", "Celestial Ray", "Aetheric Sturgeon", "Eldritch Angler", "Ancient Abyssal", "Cosmic Coelacanth", "Voidfish", "Spectral Manta", "Ethereal Prowler", "Shadow Leviathan", "Abyssal Phantom", "Starborn Guppy", "Temporal Carp", "Echoing Eel", "Dreadfin"],
-    godly: ["Poseidon's Pet", "Celestial Whale", "Leviathan", "Titanic Sea Serpent", "Oceanic Phoenix", "Primordial Megalodon", "Eternal Kraken", "Infinity Manta", "Aurora Dragonfish", "Cosmic Leviathan", "Stellar Nautilus", "Divine Serpent", "Empyrean Abyssal", "Heavenly Sturgeon", "Radiant Ray", "Chrono Carp", "Transcendent Marlin", "Holy Angler", "Omnipotent Piranha", "Genesis Whale"]
+// Cooldown storage
+const cooldowns = {}; 
+let commandsEnabled = JSON.parse(localStorage.getItem("commandsEnabled")) ?? true;
+
+// Create a toggle button in the top-right corner
+const toggleButton = document.createElement("button");
+toggleButton.innerText = commandsEnabled ? "Disable Commands" : "Enable Commands";
+toggleButton.style.position = "fixed";
+toggleButton.style.top = "10px";
+toggleButton.style.right = "10px";
+toggleButton.style.zIndex = "9999";
+toggleButton.style.padding = "5px 10px";
+toggleButton.style.background = "#444";
+toggleButton.style.color = "#fff";
+toggleButton.style.border = "none";
+toggleButton.style.cursor = "pointer";
+
+document.body.appendChild(toggleButton);
+
+// Toggle function
+toggleButton.addEventListener("click", () => {
+    commandsEnabled = !commandsEnabled;
+    localStorage.setItem("commandsEnabled", JSON.stringify(commandsEnabled));
+    toggleButton.innerText = commandsEnabled ? "Disable Commands" : "Enable Commands";
+    sendFunnyChat(`Chat commands are now ${commandsEnabled ? "enabled" : "disabled"}.`);
+});
+
+// Load guest players from localStorage
+const getGuests = () => {
+    return JSON.parse(localStorage.getItem("guestPlayers")) || [];
 };
 
-function getRandomFish() {
-    const rarity = Object.keys(fishTypes)[Math.floor(Math.random() * 6)];
-    const fish = fishTypes[rarity][Math.floor(Math.random() * fishTypes[rarity].length)];
-    return { fish, rarity };
-}
-
-function registerPlayer(name) {
-    players[name] = { fish: [], streak: 0 };
-    return `You logged in ${name}`;
-}
-
-function catchFish(name) {
-    const { fish, rarity } = getRandomFish();
-    players[name].fish.push({ fish, rarity });
-    return `You caught a ${fish} (${rarity})`;
-}
-
-function listFish(name) {
-    return players[name].fish.map(f => `${f.fish} (${f.rarity})`).join(', ') || 'No fish caught.';
-}
-
-function gamble(name) {
-    const roll = (Math.random() * 10).toFixed(2);
-    return `${name} rolled a ${roll}`;
-}
-
-function checkStreak(name) {
-    return `Your current streak is ${players[name].streak}`;
-}
-
-function trade(item, playerName) {
-    return `You are attempting to trade ${item} with ${playerName}. Waiting for approval... say yes or no.`;
-}
-
-function handleCommand(command, playerName) {
-    console.log(`Processing command: ${command} from ${playerName}`);
-
-    switch (command.trim().toLowerCase()) {
-        case '!register': return registerPlayer(playerName);
-        case '!fish': return catchFish(playerName);
-        case '!gamble': return gamble(playerName);
-        case '!streak': return checkStreak(playerName);
-        case '!trade': return `${playerName} wants to trade!`;
-        case '!commands': return "Available commands: !fish, !gamble, !streak, !trade";
+// Save new guests
+const addGuest = (player) => {
+    let guests = getGuests();
+    if (!guests.includes(player)) {
+        guests.push(player);
+        localStorage.setItem("guestPlayers", JSON.stringify(guests));
     }
-}
+};
 
-function parseChatMessage(message) {
-    const pattern = /\[([^\]]+)\] <span style="color: #[^"]+">([^:]+)<\/span>: (.+)/;
-    const match = message.match(pattern);
-    if (match) {
-        return {
-            timestamp: match[1],
-            username: match[2],
-            content: match[3]
-        };
-    }
-    return null;
-}
+// Rank system (Admins & Mods are manually set)
+const playerRanks = {
+    "Owner": ["JohnDoe"],  
+    "Admin": ["Alice", "Bob"],
+    "Mod": ["Charlie", "Dave"]
+};
 
-function monitorChat() {
-    const chatBox = document.querySelector('.chat-scrollable-inner');
-    if (!chatBox) {
-        console.log('Error: Chat box not found. Retrying in 2 seconds...');
-        setTimeout(monitorChat, 2000);
-        return;
-    }
+// Get banned players from localStorage
+const getBannedPlayers = () => JSON.parse(localStorage.getItem("bannedPlayers")) || [];
+const isBanned = (player) => getBannedPlayers().includes(player);
 
-    console.log('Chat monitor started.');
-    const observer = new MutationObserver(mutations => {
-        mutations.forEach(mutation => {
-            mutation.addedNodes.forEach(node => {
-                if (node.nodeType === Node.ELEMENT_NODE) {
-                    const message = node.innerText.trim();
-                    console.log(`New message detected: ${message}`);
-                    const parsedMessage = parseChatMessage(message);
-                    if (parsedMessage) {
-                        const { username, content } = parsedMessage;
-                        console.log(`Parsed message: ${content} from ${username}`);
-                        if (content.startsWith('!')) {
-                            console.log(`Command detected: ${content}`);
-                            const response = handleCommand(content, username);
-                            if (response) sendChatMessage(response);
-                        }
-                    }
-                }
-            });
-        });
-    });
-
-    observer.observe(chatBox, { childList: true, subtree: true });
-}
-
-function sendChatMessage(message) {
-    // Ensure the chat input is available
-    const chatInput = document.querySelector('.chat-input');
-    if (!chatInput) {
-        console.log('Error: Chat input not found.');
-        return;
-    }
-
-    console.log(`Sending message: ${message}`);
-    // Assuming you have a mechanism to send messages in the game
-    chatInput.value = message;
-    const event = new Event('input', { bubbles: true });
-    chatInput.dispatchEvent(event);
-
-    const submitButton = document.querySelector('.chat-submit-button');
-    if (submitButton) {
-        submitButton.click();
+// Ban/unban functions
+const banPlayer = (player) => {
+    let banned = getBannedPlayers();
+    if (!banned.includes(player)) {
+        banned.push(player);
+        localStorage.setItem("bannedPlayers", JSON.stringify(banned));
+        sendFunnyChat(`${player} has been banned.`);
     } else {
-        console.log('Error: Chat submit button not found.');
+        sendFunnyChat(`${player} is already banned.`);
     }
-}
-
-window.onload = () => {
-    setTimeout(() => {
-        monitorChat();
-        console.log('Drednot Command Script loaded and ready.');
-    }, 2000);
+};
+const unbanPlayer = (player) => {
+    let banned = getBannedPlayers();
+    if (banned.includes(player)) {
+        banned = banned.filter(name => name !== player);
+        localStorage.setItem("bannedPlayers", JSON.stringify(banned));
+        sendFunnyChat(`${player} has been unbanned.`);
+    } else {
+        sendFunnyChat(`${player} is not banned.`);
+    }
 };
 
+// Get player rank
+const getPlayerRank = (player) => {
+    if (getBannedPlayers().includes(player)) return "Banned";
+    for (const [rank, players] of Object.entries(playerRanks)) {
+        if (players.includes(player)) return rank;
+    }
+    if (getGuests().includes(player)) return "Guest";
+    return "Unranked";
+};
 
+// Assign guest rank if they send a command for the first time
+const ensureGuestRank = (player) => {
+    if (getPlayerRank(player) === "Unranked") {
+        addGuest(player);
+        sendFunnyChat(`${player} has been assigned as a Guest.`);
+    }
+};
+
+// Permission check
+const hasPermission = (player, requiredRanks) => {
+    return requiredRanks.includes(getPlayerRank(player));
+};
+
+// Get the sender's username, remove tags like [Crew] and [Captain]
+const getSenderName = (mess) => {
+    const match = mess.innerHTML.match(/<b>(.*?)<\/b>/);
+    if (!match) return "unknown";
+    return match[1].replace(/\[.*?\]\s*/g, "").trim(); 
+};
+
+// Fishing minigame storage
+const fishingAttempts = {};
+
+// Chat observer to handle commands
+observeNode(chatContent, () => {
+    const mess = document.querySelector("#chat-content > p:last-of-type");
+    if (!mess) return;
+    const player = getSenderName(mess);
+    if (isBanned(player)) return;
+    if (!commandsEnabled) return;
+
+    ensureGuestRank(player); // Assigns "Guest" if the player isn't ranked
+
+    if (mess.textContent.startsWith('?ban ')) {
+        if (!hasPermission(player, ["Owner", "Admin", "Mod"])) return sendFunnyChat(`${player}, you do not have permission.`);
+        const target = mess.textContent.split(' ')[1];
+        if (!target) return sendFunnyChat(`${player}, please specify a player to ban.`);
+        banPlayer(target);
+    }
+
+    if (mess.textContent.startsWith('?unban ')) {
+        if (!hasPermission(player, ["Owner", "Admin", "Mod"])) return sendFunnyChat(`${player}, you do not have permission.`);
+        const target = mess.textContent.split(' ')[1];
+        if (!target) return sendFunnyChat(`${player}, please specify a player to unban.`);
+        unbanPlayer(target);
+    }
+
+    if (mess.textContent.startsWith('?fish')) {
+        sendFunnyChat(`${player}, type 'shake' 7 times in the next 15 seconds to catch the fish!`);
+        fishingAttempts[player] = 0;
+        setTimeout(() => {
+            if (fishingAttempts[player] < 7) {
+                sendFunnyChat(`${player} failed to catch the fish!`);
+                delete fishingAttempts[player];
+            }
+        }, 15000);
+    }
+
+    if (mess.textContent.toLowerCase() === 'shake') {
+        if (fishingAttempts[player] !== undefined) {
+            fishingAttempts[player]++;
+            if (fishingAttempts[player] >= 7) {
+                sendFunnyChat(`${player} successfully caught the fish!`);
+                delete fishingAttempts[player];
+            }
+        }
+    }
+}, true, { childList: true, attributes: false, subtree: false });
