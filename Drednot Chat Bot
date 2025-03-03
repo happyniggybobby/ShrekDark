@@ -44,7 +44,7 @@ function trade(item, playerName) {
 
 function handleCommand(command, playerName) {
     console.log(`Processing command: ${command} from ${playerName}`);
-    
+
     switch (command.trim().toLowerCase()) {
         case '!register': return registerPlayer(playerName);
         case '!fish': return catchFish(playerName);
@@ -69,7 +69,7 @@ function parseChatMessage(message) {
 }
 
 function monitorChat() {
-    const chatBox = document.getElementById('chat-content');
+    const chatBox = document.querySelector('.chat-scrollable-inner');
     if (!chatBox) {
         console.log('Error: Chat box not found. Retrying in 2 seconds...');
         setTimeout(monitorChat, 2000);
@@ -102,7 +102,25 @@ function monitorChat() {
 }
 
 function sendChatMessage(message) {
+    // Ensure the chat input is available
+    const chatInput = document.querySelector('.chat-input');
+    if (!chatInput) {
+        console.log('Error: Chat input not found.');
+        return;
+    }
+
     console.log(`Sending message: ${message}`);
+    // Assuming you have a mechanism to send messages in the game
+    chatInput.value = message;
+    const event = new Event('input', { bubbles: true });
+    chatInput.dispatchEvent(event);
+
+    const submitButton = document.querySelector('.chat-submit-button');
+    if (submitButton) {
+        submitButton.click();
+    } else {
+        console.log('Error: Chat submit button not found.');
+    }
 }
 
 window.onload = () => {
@@ -111,4 +129,5 @@ window.onload = () => {
         console.log('Drednot Command Script loaded and ready.');
     }, 2000);
 };
+
 
