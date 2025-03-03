@@ -16,41 +16,41 @@ function getRandomFish() {
 
 function registerPlayer(name) {
     players[name] = { fish: [], streak: 0 };
-    return You logged in ${name};
+    return `You logged in ${name}`;
 }
 
 function catchFish(name) {
     const { fish, rarity } = getRandomFish();
     players[name].fish.push({ fish, rarity });
-    return You caught a ${fish} (${rarity});
+    return `You caught a ${fish} (${rarity})`;
 }
 
 function listFish(name) {
-    return players[name].fish.map(f => ${f.fish} (${f.rarity})).join(', ') || 'No fish caught.';
+    return players[name].fish.map(f => `${f.fish} (${f.rarity})`).join(', ') || 'No fish caught.';
 }
 
 function gamble(name) {
     const roll = (Math.random() * 10).toFixed(2);
-    return ${name} rolled a ${roll};
+    return `${name} rolled a ${roll}`;
 }
 
 function checkStreak(name) {
-    return Your current streak is ${players[name].streak};
+    return `Your current streak is ${players[name].streak}`;
 }
 
 function trade(item, playerName) {
-    return You are attempting to trade ${item} with ${playerName}. Waiting for approval... say yes or no.;
+    return `You are attempting to trade ${item} with ${playerName}. Waiting for approval... say yes or no.`;
 }
 
 function handleCommand(command, playerName) {
-    console.log(Processing command: ${command} from ${playerName});
+    console.log(`Processing command: ${command} from ${playerName}`);
     
     switch (command.trim().toLowerCase()) {
         case '!register': return registerPlayer(playerName);
         case '!fish': return catchFish(playerName);
         case '!gamble': return gamble(playerName);
         case '!streak': return checkStreak(playerName);
-        case '!trade': return ${playerName} wants to trade!;
+        case '!trade': return `${playerName} wants to trade!`;
         case '!commands': return "Available commands: !fish, !gamble, !streak, !trade";
     }
 }
@@ -82,13 +82,13 @@ function monitorChat() {
             mutation.addedNodes.forEach(node => {
                 if (node.nodeType === Node.ELEMENT_NODE) {
                     const message = node.innerText.trim();
-                    console.log(New message detected: ${message});
+                    console.log(`New message detected: ${message}`);
                     const parsedMessage = parseChatMessage(message);
                     if (parsedMessage) {
                         const { username, content } = parsedMessage;
-                        console.log(Parsed message: ${content} from ${username});
+                        console.log(`Parsed message: ${content} from ${username}`);
                         if (content.startsWith('!')) {
-                            console.log(Command detected: ${content});
+                            console.log(`Command detected: ${content}`);
                             const response = handleCommand(content, username);
                             if (response) sendChatMessage(response);
                         }
@@ -102,7 +102,7 @@ function monitorChat() {
 }
 
 function sendChatMessage(message) {
-    console.log(Sending message: ${message});
+    console.log(`Sending message: ${message}`);
 }
 
 window.onload = () => {
@@ -111,3 +111,4 @@ window.onload = () => {
         console.log('Drednot Command Script loaded and ready.');
     }, 2000);
 };
+
