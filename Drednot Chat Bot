@@ -105,7 +105,7 @@ const getSenderName = (mess) => {
 // Fishing minigame storage
 const fishingAttempts = {};
 
-// Chat observer to handle commands
+// Chat observer
 observeNode(chatContent, () => {
     const mess = document.querySelector("#chat-content > p:last-of-type");
     if (!mess) return;
